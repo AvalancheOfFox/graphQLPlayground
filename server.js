@@ -18,7 +18,7 @@ const books =  [
   const publishers = [
     { id: 1, name: "Simon & Shuster" , genres: ["Fiction", "Memoir"]},
     { id: 2, name: "Penguin" , genres: ["Fiction", "NonFiction", "Romance"]},
-    { id: 3, name: "GenericBookPublisher1", genres: ["Fiction", "SciFi", "Fantasy"] },
+    { id: 3, name: "Scholastic", genres: ["Fiction", "SciFi", "Fantasy"] },
     { id: 4, name: "GenericPublisher2", genres: ["Fiction", "Textbooks", "YA"] },
   ];
   const genres = [
