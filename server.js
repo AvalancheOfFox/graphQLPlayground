@@ -10,10 +10,12 @@ import {
 } from "graphql"
 
 const books =  [
-    { id: "1", title: "The Book of Mandalore",  genreId: "1", publisherId: 1, authorId: 1 },
-    { id: "2", title: "The Art of War",   genreId: "2", publisherId: 2, authorId: 2 },
-    { id: "3", title: "The New World Order",  genreId: "3" , publisherId: 3, authorId: 3},
-    { id: "4", title: "My Life in Hollywood",  genreId: "4", publisherId: 4 , authorId: 4},
+    { id: 1, title: "The Book of Mandalore",  genreId: "1", publisherId: 1, authorId: 1 },
+    { id: 2 , title: "The Book of Boba Feet",  genreId: "1", publisherId: 1, authorId: 1 },
+    { id: 3 , title: "The Art of War",   genreId: "2", publisherId: 2, authorId: 2 },
+    { id: 4 , title: "The New World Order",  genreId: "3" , publisherId: 3, authorId: 3},
+    { id: 5 , title: "Memoirs of a War Criminal",  genreId: "3" , publisherId: 3, authorId: 3},
+    { id: 6 , title: "My Life in Hollywood",  genreId: "4", publisherId: 4 , authorId: 4},
   ];
   const publishers = [
     { id: 1, name: "Simon & Shuster" , genres: ["Fiction", "Memoir"]},
@@ -51,7 +53,12 @@ const AuthorType = new GraphQLObjectType({
     fields: () => ({
         name: {type: GraphQLNonNull(GraphQLString)},
         id: {type: GraphQLNonNull(GraphQLInt)},
-
+        books: {
+            type: new GraphQLList(BookType),
+            resolve: (author) => {
+                return books.filter(book => book.authorId === author.id)
+            } 
+        }
     })
 })
 const BookType = new GraphQLObjectType({
@@ -80,6 +87,14 @@ const RootQueryType = new GraphQLObjectType({
     name: 'RootQuery',
     description: "Root Query",
     fields: () => ({
+        book: {
+            type:BookType,
+            description: "returns a single Book based on arg passed",
+            args: {
+                id: {type: GraphQLInt}
+            } ,
+            resolve: (parent, args) => books.find(book => book.id === args.id)
+        },
         books: {
             type: new GraphQLList(BookType),
             description: "List of all books",
