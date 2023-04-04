@@ -84,6 +84,16 @@ const RootQueryType = new GraphQLObjectType({
             type: new GraphQLList(BookType),
             description: "List of all books",
             resolve: () =>  books
+        },
+        authors: {
+            type: new GraphQLList(AuthorType),
+            description: "List of all Authors and relevant info",
+            resolve: () => authors
+        },
+        publishers: {
+            type: new GraphQLList(PublisherType),
+            description: "List of all publishers",
+            resolve: () => publishers
         }
     })
 })
@@ -94,35 +104,13 @@ const schema = new GraphQLSchema({
 
 
 
-//// best guess at setting up publishers devoid of instruction
-
-
-const publisherQuery = new GraphQLObjectType({
-    name: "PublisherQuery",
-    description: "Returns all publishers",
-    fields: () => ({
-        publishers: {
-            type: new GraphQLList(PublisherType),
-            description: "Returns a list of all publishers and relevant info",
-            resolve: () => publishers
-        }
-    })
-})
-
-const publisherSchema = new GraphQLSchema({
-    query: publisherQuery
-})
-
 const app = express()
 app.use("/graphQL", graphqlHTTP({
     graphiql: true,
     schema: schema
 }) )
 
-app.use("/graphql/publishers", graphqlHTTP({
-    graphiql: true,
-    schema: publisherSchema
-}))
+
 const PORT = 6969;
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
